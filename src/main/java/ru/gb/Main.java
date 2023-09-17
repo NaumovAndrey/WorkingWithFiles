@@ -1,7 +1,11 @@
 package ru.gb;
 
+import java.io.File;
+
+import static ru.gb.Tree.print;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        print(new File("."), "", true);
     }
 }
