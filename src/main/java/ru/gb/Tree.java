@@ -20,19 +20,27 @@ public class Tree {
         }
 
         int subDitTotal = 0;
-        for (int i = 0; i < files.length; i++){
-            if (files[i].isDirectory()){
+        int subFileTotal = 0;
+        for (File f : files) {
+            if (f.isDirectory()) {
                 subDitTotal++;
+            } else {
+                subFileTotal++;
             }
         }
 
-        int subDirCounter =0;
-        for (int i = 0; i < files.length; i++){
-            if (files[i].isDirectory()){
+        int subDirCounter = 0;
+        int subFileCounter = 0;
+        for (File f : files) {
+            if (f.isDirectory()) {
                 subDirCounter++;
-                print(files[i], indent, subDirCounter == subDitTotal);
+                print(f, indent, subDirCounter == subDitTotal && subFileCounter == 0);
+            } else {
+                subFileCounter++;
+                print(f, indent, subFileCounter == subFileTotal);
             }
         }
 
     }
 }
+//55.2
