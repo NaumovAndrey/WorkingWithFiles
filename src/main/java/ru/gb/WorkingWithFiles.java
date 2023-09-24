@@ -1,6 +1,8 @@
 package ru.gb;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +33,8 @@ public class WorkingWithFiles {
 
         List<String> result = searcMatch(new File("."), TO_SEARCH);
         System.out.println(Arrays.toString(new List[]{result}));
+
+        createBackup(".");
     }
 
     /**
@@ -135,5 +139,43 @@ public class WorkingWithFiles {
         return list;
     }
 
+    /**
+     * Резервная копия файлов из указанной директории
+     * @param directoryPath директория из которой нужно создать резервные копии файлов
+     */
 
+    public static void createBackup(String directoryPath) {
+        File directory = new File(directoryPath);
+        File backupDirectory = new File("./backup");
+
+        // Создаем папку для резервной копии, если она не существует
+        if (!backupDirectory.exists()) {
+            backupDirectory.mkdir();
+        }
+
+        // Получаем список файлов в указанной директории
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            // Обходим все файлы и создаем их резервные копии
+            for (File file : files) {
+                if (file.isFile()) {
+                    try {
+                        // Создаем путь для резервной копии файла в папке ./backup
+                        String backupFilePath = backupDirectory.getAbsolutePath()
+                                + File.separator + file.getName();
+
+                        // Копируем файл в резервную папку
+                        Files.copy(file.toPath(), new File(backupFilePath).toPath(),
+                                StandardCopyOption.REPLACE_EXISTING);
+
+                        System.out.println("Создана резервная копия файла: " + backupFilePath);
+                    } catch (IOException e) {
+                        System.out.println("Ошибка при создании резервной копии файла: " + file.getName());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 }
